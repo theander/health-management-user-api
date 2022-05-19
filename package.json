@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "swagger-autogen": "node swagger.js"
   },
   "repository": {
@@ -23,6 +23,7 @@
     "express": "^4.18.1",
     "mysql2": "^2.3.3",
     "sequelize": "^6.19.0",
+    "supertest": "^6.2.3",
     "swagger-autogen": "^2.21.1",
     "swagger-ui-express": "^4.3.0"
   }
