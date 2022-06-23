@@ -2,7 +2,7 @@
   "name": "health-management-user-api",
   "version": "1.0.0",
   "description": "User api",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "test": "jest",
@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/theander/health-management-user-api#readme",
   "dependencies": {
-    "dotenv": "^16.0.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mysql2": "^2.3.3",
     "sequelize": "^6.19.0",

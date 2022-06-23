@@ -10,7 +10,7 @@ app.use(routes)
 
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
-
+//db.sync(() => console.log(`Banco de dados conectado: ${process.env.DB_NAME}`));
 app.get("/status",
     (req, res) => {
         res.send("Page Running")

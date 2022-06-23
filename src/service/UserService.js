@@ -1,15 +1,26 @@
-const User = require('../model/User')
+const User = require('../model/User');
+const bcrypt = require("bcryptjs");
 
 
-export const createUser = await User.create(user);
+async function createUser(user) {
+    const salt = "s3nh@"
+    bcrypt.genSalt(10, function (err, salt) {
+        bcrypt.hash(senha, salt, function (err, hash) {
+            user.password = hash;
+            return User.create(user);
+        });
+    });
+}
 
-export const deleteUser = await User.destroy({where: {id: user.id}})
+async function checkUser(user) {
+    const password = user.password;
+    const returnedUser = await User.findOne({
+        where: {name: user.username},
+    });
+    const hash = returnedUser.password;
+    bcrypt.compare(password, hash).then((res) => {
+        console.log(res)
+    });
+}
 
-export const updateUser = await User.update(user, {
-    where: {
-        id: user.id
-    }
-})
-export const findUser = await User.findByPk(user.id);
-
-
+module.exports = {createUser, checkUser}

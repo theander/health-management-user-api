@@ -1,12 +1,10 @@
-const Sequelize = require('sequelize');
-const database = require('../conf/userDb');
+const {sequelize} = require("../conf/userDb.js");
+const Sequelize = require("sequelize");
 
-
-const User = database.define('user', {
+const User = sequelize.define('user', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        allowNull: false,
         primaryKey: true
     },
     name: {
@@ -21,6 +19,6 @@ const User = database.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     }
-
 })
-export default User;
+
+module.exports = User;
