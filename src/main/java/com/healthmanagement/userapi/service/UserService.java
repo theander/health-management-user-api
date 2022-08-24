@@ -6,6 +6,7 @@ import com.healthmanagement.userapi.model.UserApp;
 import java.util.List;
 
 public interface UserService {
+    UserApp getUserById(Long id);
     UserApp saveUser(UserApp user);
 
     Role saveRole(Role role);

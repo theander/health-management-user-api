@@ -43,6 +43,11 @@ private final PasswordEncoder passwordEncoder;
     }
 
     @Override
+    public UserApp getUserById(Long id) {
+        return userRepository.findUserAppById(id);
+    }
+
+    @Override
     public UserApp saveUser(UserApp user) {
         log.info("Saving user {} on the database", user.getName());
       user.setPassword(passwordEncoder.encode(user.getPassword()));

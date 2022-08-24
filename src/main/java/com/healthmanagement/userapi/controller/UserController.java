@@ -23,12 +23,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,6 +35,13 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
 
+
+
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<UserApp> getUser(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok().body(userService.getUserById(userId));
+    }
     @GetMapping("/users")
     public ResponseEntity<List<UserApp>> getAllUsers() {
         return ResponseEntity.ok()
