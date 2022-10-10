@@ -32,12 +32,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@CrossOrigin
 public class UserController {
     private final UserService userService;
-
-
-
-
+    
     @GetMapping("/users/{userId}")
     public ResponseEntity<UserApp> getUser(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok().body(userService.getUserById(userId));
