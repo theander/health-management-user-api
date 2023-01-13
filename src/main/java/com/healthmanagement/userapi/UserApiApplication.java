@@ -17,11 +17,11 @@ public class UserApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserApiApplication.class, args);
     }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//
+//    @Bean
+//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 //    @Bean
 //    CommandLineRunner run(UserService userService) {
 //        return args -> {
