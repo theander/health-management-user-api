@@ -7,8 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.WebApplicationInitializer;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import java.util.ArrayList;
 
 @SpringBootApplication
@@ -22,6 +27,8 @@ public class UserApiApplication {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 //    @Bean
 //    CommandLineRunner run(UserService userService) {
 //        return args -> {

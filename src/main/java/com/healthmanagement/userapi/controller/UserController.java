@@ -14,16 +14,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
@@ -34,11 +30,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
-    
+
     @GetMapping("/users/{userId}")
-    public ResponseEntity<UserApp> getUser(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok().body(userService.getUserById(userId));
+    public ResponseEntity<UserApp> getUserById(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok()
+                .body(userService.getUserById(userId));
     }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<UserApp> deleteUserById(@PathVariable(value = "userId") Long userId) {
+        System.out.println("l:"+userId);
+
+        return userService.deleteUserById(userId);
+    }
+
     @GetMapping("/users")
     public ResponseEntity<List<UserApp>> getAllUsers() {
         return ResponseEntity.ok()
@@ -65,6 +70,7 @@ public class UserController {
 
     @PostMapping("/role/addtouser")
     public ResponseEntity addRoleToUser(@RequestBody RoleToUserForm form) {
+
         userService.addRoleToUser(form.getUsername(), form.getRolename());
         return ResponseEntity.ok()
                 .build();

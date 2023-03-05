@@ -6,6 +6,8 @@ import com.healthmanagement.userapi.repository.RoleRepository;
 import com.healthmanagement.userapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,11 +47,13 @@ private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserApp getUserById(Long id) {
+        log.info("Get user Id {} on the database", id);
         return userRepository.findUserAppById(id);
     }
 
     @Override
     public UserApp saveUser(UserApp user) {
+
         log.info("Saving user {} on the database", user.getName());
       user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -80,6 +85,18 @@ private final PasswordEncoder passwordEncoder;
     public List<UserApp> getUsers() {
         log.info("Fetching all users");
         return userRepository.findAll();
+    }
+
+    @Override
+    public ResponseEntity<UserApp> deleteUserById(Long userId) {
+        log.info("Deleting user by Id:{}",userId);
+        Optional<UserApp> userApp = userRepository.findById(userId);
+        if(userApp.isPresent()){
+
+            userRepository.deleteById(userId);
+            return new ResponseEntity<UserApp>(userApp.get(), HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
 
