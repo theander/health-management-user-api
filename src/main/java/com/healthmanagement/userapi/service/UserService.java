@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface UserService {
     UserApp getUserById(Long id);
+
+    List<UserApp> getUserByRole(String userRole);
+
     UserApp saveUser(UserApp user);
 
     Role saveRole(Role role);

@@ -29,7 +29,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -52,10 +52,16 @@ private final PasswordEncoder passwordEncoder;
     }
 
     @Override
+    public List<UserApp> getUserByRole(String userRole) {
+        Role role =roleRepository.findRoleByName(userRole);
+        return userRepository.findUserAppByRolesContaining(role);
+    }
+
+    @Override
     public UserApp saveUser(UserApp user) {
 
         log.info("Saving user {} on the database", user.getName());
-      user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -89,9 +95,9 @@ private final PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseEntity<UserApp> deleteUserById(Long userId) {
-        log.info("Deleting user by Id:{}",userId);
+        log.info("Deleting user by Id:{}", userId);
         Optional<UserApp> userApp = userRepository.findById(userId);
-        if(userApp.isPresent()){
+        if (userApp.isPresent()) {
 
             userRepository.deleteById(userId);
             return new ResponseEntity<UserApp>(userApp.get(), HttpStatus.NO_CONTENT);

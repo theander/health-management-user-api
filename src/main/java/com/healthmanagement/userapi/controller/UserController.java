@@ -10,6 +10,7 @@ import com.healthmanagement.userapi.model.RoleToUserForm;
 import com.healthmanagement.userapi.model.UserApp;
 import com.healthmanagement.userapi.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +25,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -37,9 +37,14 @@ public class UserController {
                 .body(userService.getUserById(userId));
     }
 
+    @GetMapping("/users-by-role/{userRole}")
+    public ResponseEntity<List<UserApp>> getUserByRole(@PathVariable("userRole") String userRole) {
+        return ResponseEntity.ok()
+                .body(userService.getUserByRole(userRole));
+    }
+
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<UserApp> deleteUserById(@PathVariable(value = "userId") Long userId) {
-        System.out.println("l:"+userId);
 
         return userService.deleteUserById(userId);
     }
