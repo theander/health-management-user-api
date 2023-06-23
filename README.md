@@ -1,4 +1,4 @@
-#Health management user api
+# Health management user api
 
 ![](https://github.com/theander/health-management-labs-api/actions/workflows/master.yml/badge.svg)
 
