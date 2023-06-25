@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<UserApp> getUserByRole(String userRole) {
-        Role role =roleRepository.findRoleByName(userRole);
+        Role role = roleRepository.findRoleByName(userRole);
         return userRepository.findUserAppByRolesContaining(role);
     }
 
@@ -77,8 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         UserApp user = userRepository.findUserAppByUsername(username);
 
         Role role = roleRepository.findRoleByName(roleName);
-        user.getRoles()
-                .add(role);
+        user.getRoles().add(role);
     }
 
     @Override
@@ -94,7 +93,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity<UserApp> deleteUserById(Long userId) {
+    public ResponseEntity deleteUserById(Long userId) {
         log.info("Deleting user by Id:{}", userId);
         Optional<UserApp> userApp = userRepository.findById(userId);
         if (userApp.isPresent()) {
@@ -102,7 +101,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userRepository.deleteById(userId);
             return new ResponseEntity<UserApp>(userApp.get(), HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Long>(userId,HttpStatus.NOT_FOUND);
     }
 
 

@@ -51,8 +51,9 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<List<UserApp>> getAllUsers() {
+        List<UserApp> users = userService.getUsers();
         return ResponseEntity.ok()
-                .body(userService.getUsers());
+                .body(users);
     }
 
     @PostMapping("/user/save")
@@ -65,7 +66,7 @@ public class UserController {
     }
 
     @PostMapping("/role/save")
-    public ResponseEntity<Role> saveUser(@RequestBody Role role) {
+    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/role/save")
                 .toUriString());
