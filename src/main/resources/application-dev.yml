@@ -1,13 +1,21 @@
 spring:
   datasource:
-    url: jdbc:postgresql://54.221.153.51:5432/users
-    username: postgres
-    password: qwerty
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5440/hm?currentSchema=users}
+    username: ${DATABASE_USER:my_user}
+    password: ${DATABASE_PASSWORD:my_password}
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  flyway:
+    locations: db/migrations
+    enabled: true
+
 server:
   port: 8180
