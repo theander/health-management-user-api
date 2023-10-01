@@ -13,7 +13,7 @@ public class AppConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
+                        .allowedOrigins("*")
                         .allowedMethods("GET","POST","DELETE","OPTIONS")
                         .allowedHeaders("authorization","contentType","Origin","Content-Type","X-Auth-Token")
                         .exposedHeaders("Authorization");
