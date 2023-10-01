@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@CrossOrigin
+@CrossOrigin("http://54.80.8.44:3000")
 public class UserController {
     private final UserService userService;
 
