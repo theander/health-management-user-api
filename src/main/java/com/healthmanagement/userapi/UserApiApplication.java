@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.WebApplicationInitializer;
 
@@ -17,6 +18,7 @@ import javax.servlet.ServletException;
 import java.util.ArrayList;
 
 @SpringBootApplication
+@EnableJpaRepositories
 public class UserApiApplication {
 
     public static void main(String[] args) {

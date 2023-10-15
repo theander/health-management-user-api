@@ -21,13 +21,17 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.net.URI;
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Slf4j
 public class UserController {
     private final UserService userService;
 
@@ -35,6 +39,19 @@ public class UserController {
     public ResponseEntity<UserApp> getUserById(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok()
                 .body(userService.getUserById(userId));
+    }
+    @GetMapping("/users/count")
+    public ResponseEntity<Map<Integer,Integer>> countUsers() {
+        final var map=userService.countUsersByMonth();
+        return ResponseEntity.ok()
+                .body(map);
+    }
+    @GetMapping("/user-by-email/{email}")
+    public ResponseEntity<UserApp> getUserByEmail(@PathVariable String email) {
+        final var user = userService.getUserByEmail(email);
+        
+        return user != null ? ResponseEntity.ok()
+                .body(user) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/users-by-role/{userRole}")
@@ -61,10 +78,29 @@ public class UserController {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/user/save")
                 .toUriString());
-        return ResponseEntity.created(uri)
-                .body(userService.saveUser(user));
+        user.setRegisterDate(OffsetDateTime.now());
+        try {
+            return ResponseEntity.created(uri)
+                    .body(userService.saveUser(user));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
     }
 
+    @PutMapping("/user/update")
+    public ResponseEntity<UserApp> updateUser(@RequestBody UserApp user) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/user/save")
+                .toUriString());
+        try {
+            return ResponseEntity.created(uri)
+                    .body(userService.saveUser(user));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+    }
     @PostMapping("/role/save")
     public ResponseEntity<Role> saveRole(@RequestBody Role role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()

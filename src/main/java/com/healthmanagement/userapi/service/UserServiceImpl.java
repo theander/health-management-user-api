@@ -17,10 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.time.Month;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +51,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public UserApp getUserByEmail(String email) {
+        final var usr = userRepository.findUserAppByEmail(email);
+
+        if (usr.isPresent()) {
+            return usr.get();
+        }
+        return null;
+    }
+
+    @Override
     public List<UserApp> getUserByRole(String userRole) {
         Role role = roleRepository.findRoleByName(userRole);
         return userRepository.findUserAppByRolesContaining(role);
@@ -59,7 +68,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserApp saveUser(UserApp user) {
-
         log.info("Saving user {} on the database", user.getName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -101,7 +109,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userRepository.deleteById(userId);
             return new ResponseEntity<UserApp>(userApp.get(), HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<Long>(userId,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Long>(userId, HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public Map<Integer, Integer> countUsersByMonth() {
+        Map<Integer,Integer> map = new HashMap<>();
+        Stream<Month> stream = Arrays.stream(Month.values());
+        stream.forEach(month -> {
+            int o = userRepository.countForMonth(month.getValue());
+            map.put(month.getValue(),o);
+        });
+        return map;
     }
 
 

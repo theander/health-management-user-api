@@ -5,9 +5,11 @@ import com.healthmanagement.userapi.model.UserApp;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     UserApp getUserById(Long id);
+    UserApp getUserByEmail(String id);
 
     List<UserApp> getUserByRole(String userRole);
 
@@ -22,4 +24,6 @@ public interface UserService {
     List<UserApp> getUsers();
 
     ResponseEntity<UserApp> deleteUserById(Long userId);
+
+    Map<Integer, Integer> countUsersByMonth();
 }
