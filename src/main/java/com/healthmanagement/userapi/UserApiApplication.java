@@ -18,7 +18,6 @@ import javax.servlet.ServletException;
 import java.util.ArrayList;
 
 @SpringBootApplication
-@EnableJpaRepositories
 public class UserApiApplication {
 
     public static void main(String[] args) {
