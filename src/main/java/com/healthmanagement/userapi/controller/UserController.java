@@ -28,6 +28,8 @@ import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -40,16 +42,18 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(userService.getUserById(userId));
     }
+
     @GetMapping("/users/count")
-    public ResponseEntity<Map<Integer,Integer>> countUsers() {
-        final var map=userService.countUsersByMonth();
+    public ResponseEntity<Map<Integer, Integer>> countUsers() {
+        final var map = userService.countUsersByMonth();
         return ResponseEntity.ok()
                 .body(map);
     }
+
     @GetMapping("/user-by-email/{email}")
     public ResponseEntity<UserApp> getUserByEmail(@PathVariable String email) {
         final var user = userService.getUserByEmail(email);
-        
+
         return user != null ? ResponseEntity.ok()
                 .body(user) : ResponseEntity.notFound().build();
     }
@@ -62,8 +66,11 @@ public class UserController {
 
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<UserApp> deleteUserById(@PathVariable(value = "userId") Long userId) {
-
-        return userService.deleteUserById(userId);
+        final var userAppResponseEntity = userService.deleteUserById(userId);
+        if (isNull(userAppResponseEntity)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/users")
@@ -101,6 +108,7 @@ public class UserController {
         }
 
     }
+
     @PostMapping("/role/save")
     public ResponseEntity<Role> saveRole(@RequestBody Role role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()

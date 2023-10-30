@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserApp getUserByEmail(String email) {
         final var usr = userRepository.findUserAppByEmail(email);
+        log.info("User {}", usr);
 
         if (usr.isPresent()) {
             return usr.get();
@@ -101,15 +102,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseEntity deleteUserById(Long userId) {
+    public UserApp deleteUserById(Long userId) {
         log.info("Deleting user by Id:{}", userId);
         Optional<UserApp> userApp = userRepository.findById(userId);
         if (userApp.isPresent()) {
-
-            userRepository.deleteById(userId);
-            return new ResponseEntity<UserApp>(userApp.get(), HttpStatus.NO_CONTENT);
+            UserApp userApp1 = userApp.get();
+            userRepository.delete(userApp1);
+           return userApp1;
         }
-        return new ResponseEntity<Long>(userId, HttpStatus.NOT_FOUND);
+        return null;
     }
 
     @Override

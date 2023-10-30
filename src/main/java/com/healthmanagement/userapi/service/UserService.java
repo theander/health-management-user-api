@@ -23,7 +23,7 @@ public interface UserService {
 
     List<UserApp> getUsers();
 
-    ResponseEntity<UserApp> deleteUserById(Long userId);
+    UserApp deleteUserById(Long userId);
 
     Map<Integer, Integer> countUsersByMonth();
 }

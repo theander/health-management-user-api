@@ -4,19 +4,15 @@ import com.healthmanagement.userapi.model.Role;
 import com.healthmanagement.userapi.model.UserApp;
 import com.healthmanagement.userapi.repository.RoleRepository;
 import com.healthmanagement.userapi.repository.UserRepository;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 class UserServiceImplTest {
     @Mock
@@ -108,14 +103,16 @@ class UserServiceImplTest {
 
     @Test
     void addRoleToUser() {
-        List<Role> roles = Arrays.asList(new Role(5l,"tests"));
+        List<Role> roles = Arrays.asList(new Role(5l, "tests"));
         Role role = this.dummyRole();
         UserApp userApp = this.dummyUserApp();
         userApp.setRoles(roles);
         when(roleRepository.findRoleByName(any())).thenReturn(role);
         when(userRepository.findUserAppByUsername(any())).thenReturn(userApp);
 
-        assertThrows(Exception.class,()->{userService.addRoleToUser("joao", "ADMIN");});
+        assertThrows(Exception.class, () -> {
+            userService.addRoleToUser("joao", "ADMIN");
+        });
 
         verify(roleRepository, times(1)).findRoleByName(any());
         verify(userRepository, times(1)).findUserAppByUsername(any());
@@ -135,21 +132,19 @@ class UserServiceImplTest {
         UserApp userApp = this.dummyUserApp();
         when(userRepository.findById(any())).thenReturn(Optional.of(userApp));
 
-        ResponseEntity<UserApp> userAppResponseEntity = userService.deleteUserById(2l);
+        final var userAppResponseEntity = userService.deleteUserById(2l);
         assertThat(userAppResponseEntity).isNotNull();
-        assertEquals(userAppResponseEntity.getStatusCode(), HttpStatus.NO_CONTENT);
-        verify(userRepository, times(1)).deleteById(any());
+        verify(userRepository).delete(userApp);
     }
 
     @Test
     void GetNotFoundOnDeleteUserById() {
         UserApp userApp = this.dummyUserApp();
         when(userRepository.findById(any())).thenReturn(Optional.empty());
-        ResponseEntity responseEntity = userService.deleteUserById(2l);
+        final var responseEntity = userService.deleteUserById(2l);
 
 
-        assertThat(responseEntity.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(responseEntity.getBody()).isEqualTo(2L);
+        assertThat(responseEntity).isEqualTo(null);
 
         verify(userRepository, times(0)).deleteById(any());
     }

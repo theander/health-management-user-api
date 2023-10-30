@@ -66,13 +66,12 @@ class UserControllerTest {
     @Test
     void deleteUserById() throws Exception {
         UserApp userApp = UserApp.builder().id(123l).name("jose").roles(Arrays.asList(new Role(1234l, "ADMIN"))).build();
-        when(userService.deleteUserById(any())).thenReturn(new ResponseEntity<UserApp>(userApp, HttpStatus.NO_CONTENT));
+        when(userService.deleteUserById(any())).thenReturn(userApp);
 
         webMvcTest.perform(delete("/api/users/{userId}", "123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.ALL))
                 .andExpect(status().isNoContent())
-                .andExpect(jsonPath("$.id").value(123l))
                 .andReturn();
     }
 
