@@ -27,7 +27,7 @@ public class UserApp {
     private String password;
     @Column(nullable = false,unique = true)
     private String email;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private Collection<Role> roles = new ArrayList<>();
     private OffsetDateTime registerDate;
 

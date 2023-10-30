@@ -1,19 +1,21 @@
 create schema if not exists users;
-create table role
+
+create table roles
 (
     id   bigserial
-        primary key,
-    name varchar(255)
+        primary key
+                      not null,
+    name varchar(255) not null
 );
 
 create table user_app
 (
-    id       bigserial
+    id           bigserial
         primary key,
-    name     varchar(255),
-    password varchar(255),
-    username varchar(255),
-    email varchar(255) unique not null,
+    name         varchar(255),
+    password     varchar(255)        not null,
+    username     varchar(255)        not null unique,
+    email        varchar(255) unique not null,
     registerDate DATE
 
 );
@@ -21,12 +23,11 @@ create table user_app
 
 create table user_app_roles
 (
-    user_app_id bigint not null
-        constraint fki3ssx7dg70gsctusbyaosfy6m
-            references user_app,
-    roles_id    bigint not null
-        constraint fkppiewfvnu7rsn6epfx5khbjja
-            references role
+
+        user_id INT REFERENCES user_app(id),
+        role_id INT REFERENCES roles(id),
+        PRIMARY KEY (user_id, role_id)
+
 );
 
 alter table user_app_roles
