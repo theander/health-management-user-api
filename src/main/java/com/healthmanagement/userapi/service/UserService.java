@@ -22,6 +22,7 @@ public interface UserService {
     UserApp getUser(String username);
 
     List<UserApp> getUsers();
+    List<Role> getRoles();
 
     UserApp deleteUserById(Long userId);
 

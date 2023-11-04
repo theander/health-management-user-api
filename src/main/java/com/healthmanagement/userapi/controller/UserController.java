@@ -79,7 +79,12 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(users);
     }
-
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getAllRoles() {
+        List<Role> users = userService.getRoles();
+        return ResponseEntity.ok()
+                .body(users);
+    }
     @PostMapping("/user/save")
     public ResponseEntity<UserApp> saveUser(@RequestBody UserApp user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()

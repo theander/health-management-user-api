@@ -100,7 +100,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("Fetching all users");
         return userRepository.findAll();
     }
-
+    @Override
+    public List<Role> getRoles() {
+        log.info("Fetching all roles");
+        return roleRepository.findAll();
+    }
     @Override
     public UserApp deleteUserById(Long userId) {
         log.info("Deleting user by Id:{}", userId);
