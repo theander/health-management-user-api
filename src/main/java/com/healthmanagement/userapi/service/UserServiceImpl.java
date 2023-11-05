@@ -75,6 +75,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public UserApp updateUser(UserApp user) {
+        log.info("Saving user {} on the database", user.getName());
+        return userRepository.save(user);
+    }
+
+    @Override
     public Role saveRole(Role role) {
         log.info("Saving role {} on the database", role.getName());
         return roleRepository.save(role);

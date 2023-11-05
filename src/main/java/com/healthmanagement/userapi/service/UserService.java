@@ -10,17 +10,12 @@ import java.util.Map;
 public interface UserService {
     UserApp getUserById(Long id);
     UserApp getUserByEmail(String id);
-
     List<UserApp> getUserByRole(String userRole);
-
     UserApp saveUser(UserApp user);
-
+    UserApp updateUser(UserApp user);
     Role saveRole(Role role);
-
     void addRoleToUser(String username, String roleName);
-
     UserApp getUser(String username);
-
     List<UserApp> getUsers();
     List<Role> getRoles();
 
